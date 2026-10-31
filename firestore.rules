@@ -6,10 +6,15 @@ service cloud.firestore {
       allow read, write: if request.time < timestamp.date(2026, 11, 30);
     }
 
-    // Filled outside the app by tools/seed_books.py; clients can only read.
+    // Clients can read books and change only the copies of an existing book.
     match /books/{bookId} {
       allow read: if true;
-      allow write: if false;
+      allow create, delete: if false;
+      allow update: if request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['copies'])
+                    && request.resource.data.copies is int
+                    && request.resource.data.copies >= 0
+                    && request.resource.data.copies <= 1000;
     }
   }
 }

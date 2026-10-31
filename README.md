@@ -22,7 +22,7 @@ The books were added outside the Flutter app, in the existing `urk23cs5014-flutt
 
 1. A temporary rule allowing writes to `books` was deployed.
 2. `tools/seed_books.py` was run once. It calls the Firestore REST API, uses the ISBN as the Document ID, and skips books that already exist.
-3. The rule was changed to read-only straight away (`allow read: if true; allow write: if false;`) and deployed again. The script can no longer write, and neither can any client.
+3. The rule was closed straight away and deployed again, so the script can no longer add books.
 
 | ISBN (Document ID) | Title | Author | Copies |
 | --- | --- | --- | --- |
@@ -33,7 +33,12 @@ The books were added outside the Flutter app, in the existing `urk23cs5014-flutt
 | 9780262033848 | Introduction to Algorithms | Thomas H. Cormen | 0 |
 | 9781491950357 | Building Microservices | Sam Newman | 4 |
 
-`firestore.rules` also holds the Experiment 7 `employees` rule, because both apps share one project and deploying replaces the whole rules file. Keep it the same as `firestore.rules` in the Experiment 7 repo.
+## Security rules
+
+Experiments 7, 8 and 9 share one Firebase project and deploying replaces the whole rules file, so `firestore.rules` is identical in all three repos:
+
+- `employees`: read and write, until 30 November 2026.
+- `books`: read for everyone. A client may update only the `copies` field of an existing book (a whole number from 0 to 1000), which Experiment 9 uses. Creating and deleting books is rejected. This app still only reads.
 
 ## How to run
 
