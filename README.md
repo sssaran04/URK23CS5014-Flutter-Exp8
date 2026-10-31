@@ -35,10 +35,11 @@ The books were added outside the Flutter app, in the existing `urk23cs5014-flutt
 
 ## Security rules
 
-Experiments 7, 8 and 9 share one Firebase project and deploying replaces the whole rules file, so `firestore.rules` is identical in all three repos:
+Experiments 7, 8, 9 and 10 share one Firebase project and deploying replaces the whole rules file, so `firestore.rules` is identical in all four repos:
 
 - `employees`: read and write, until 30 November 2026.
 - `books`: read for everyone. A client may update only the `copies` field of an existing book (a whole number from 0 to 1000), which Experiment 9 uses. Creating and deleting books is rejected. This app still only reads.
+- `users`: read for everyone, because Experiment 10 logs in by reading Firestore directly. All client writes are rejected.
 
 ## How to run
 
